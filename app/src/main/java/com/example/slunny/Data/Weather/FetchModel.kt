@@ -14,5 +14,6 @@ data class FetchModel(
 
 @Serializable
 data class FetchList(
-    val MapData: Map<String, Double>
+    val MapData: Map<String, Double>,
+    val MapInfo: Map<Int, Double>
 )

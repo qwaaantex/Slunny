@@ -15,11 +15,12 @@ import com.example.slunny.Constants.TownData
 import com.example.slunny.Screens.Widgets.Town.TownFeedBack
 import com.example.slunny.Screens.Widgets.Town.TownInformation
 import com.example.slunny.Screens.Widgets.Town.TownMainTown
+import com.example.slunny.Screens.Widgets.Town.TownMoreInformation
 import com.example.slunny.Screens.Widgets.Town.TownWeather
 
 @Composable
 fun Town(data: TownData, controller: NavController) {
-    val scrollState = rememberScrollState()
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TownTopAppBar(controller)
@@ -35,7 +36,8 @@ fun Town(data: TownData, controller: NavController) {
             TownMainTown(data.Name, data.Temp)
             TownInformation("Неизвестно")
             TownFeedBack()
-            TownWeather(LocalContext.current, data.Name)
+            TownWeather(context, data.Name)
+            TownMoreInformation(context, data.Name)
         }
     }
 }

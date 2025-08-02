@@ -24,8 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
-import androidx.constraintlayout.compose.ConstraintLayoutScope
 import com.example.slunny.Data.Weather.Weather
 import com.example.slunny.ui.theme.LightBlue
 

@@ -18,11 +18,13 @@ class Weather(context: Context) {
     var isLoading = MutableStateFlow<Boolean>(false)
     var isLoadingList = MutableStateFlow<Boolean>(false)
 
+
     var responseData = MutableStateFlow<FetchModel?>(null)
     var errorMessage = MutableStateFlow<String?>(null)
 
-    val responseMapData = MutableStateFlow<FetchList?>(null)
-    val errorMapMessage = MutableStateFlow<String?>(null)
+    var responseMapData = MutableStateFlow<FetchList?>(null)
+    var errorMapMessage = MutableStateFlow<String?>(null)
+
 
     fun getWeather(town: String) {
         isLoading.value = true
@@ -39,7 +41,8 @@ class Weather(context: Context) {
                     val tempFeels = jsonObject.getDouble("feelslike_c")
                     val Humidity = jsonObject.getInt("humidity")
                     val Cloud = jsonObject.getInt("cloud")
-                    val ImageUrlObj = jsonObject.getJSONObject("condition"); val ImageUrl = ImageUrlObj.getString("icon")
+                    val ImageUrlObj = jsonObject.getJSONObject("condition");
+                    val ImageUrl = ImageUrlObj.getString("icon")
                     responseData.value =
                         FetchModel(
                             tempCurrent = temp,
@@ -78,13 +81,18 @@ class Weather(context: Context) {
                     val Object = JSONObject(response);
                     val JsonObjDay = Object.getJSONObject("forecast").getJSONArray("forecastday")
                     var forecastMap = mutableMapOf<String, Double>()
+                    var forecastInfo = mutableMapOf<Int, Double>()
                     for (i in 0 until JsonObjDay.length()) {
                         val date = JsonObjDay.getJSONObject(i).getString("date")
+                        val humidity =
+                            JsonObjDay.getJSONObject(i).getJSONObject("day").getInt("avghumidity")
+                        val windSpeed = JsonObjDay.getJSONObject(i).getJSONObject("day").getDouble("maxwind_mph")
                         val max_temp =
                             JsonObjDay.getJSONObject(i).getJSONObject("day").getDouble("maxtemp_c")
                         forecastMap.put(date, max_temp)
+                        forecastInfo.put(humidity, windSpeed)
                     }
-                    responseMapData.value = FetchList(forecastMap)
+                    responseMapData.value = FetchList(MapData = forecastMap, MapInfo = forecastInfo)
                     Log.d("MyLog", responseMapData.value.toString())
                     isLoadingList.value = false
                 } catch (e: Exception) {
@@ -95,11 +103,13 @@ class Weather(context: Context) {
                 Log.d("MyLog", error.toString())
             }
         )
-        stringRequest.setRetryPolicy(DefaultRetryPolicy(
-            60000,
-            1,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        ))
+        stringRequest.setRetryPolicy(
+            DefaultRetryPolicy(
+                60000,
+                1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+        )
         request.add(stringRequest)
     }
 
