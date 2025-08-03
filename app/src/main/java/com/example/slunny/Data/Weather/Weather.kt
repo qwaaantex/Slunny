@@ -2,32 +2,35 @@ package com.example.slunny.Data.Weather
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.json.JSONObject
 
 const val key = "2f69ef0332ea402586975549253007"
 
 
-class Weather(context: Context) {
+class Weather(context: Context) : ViewModel() {
     private val request = Volley.newRequestQueue(context.applicationContext)
 
-    var isLoading = MutableStateFlow<Boolean>(false)
-    var isLoadingList = MutableStateFlow<Boolean>(false)
+    var isLoading by mutableStateOf<Boolean>(false)
+    var isLoadingList by mutableStateOf<Boolean>(false)
 
 
-    var responseData = MutableStateFlow<FetchModel?>(null)
-    var errorMessage = MutableStateFlow<String?>(null)
+    var responseData by mutableStateOf<FetchModel?>(null)
+    var errorMessage = mutableStateOf<String?>(null)
 
-    var responseMapData = MutableStateFlow<FetchList?>(null)
-    var errorMapMessage = MutableStateFlow<String?>(null)
+    var responseMapData by mutableStateOf<FetchList?>(null)
+    var errorMapMessage by mutableStateOf<String?>(null)
 
 
     fun getWeather(town: String) {
-        isLoading.value = true
+        isLoading = true
 
         val url = "https://api.weatherapi.com/v1/current.json"
         val stringRequest = StringRequest(
@@ -43,7 +46,7 @@ class Weather(context: Context) {
                     val Cloud = jsonObject.getInt("cloud")
                     val ImageUrlObj = jsonObject.getJSONObject("condition");
                     val ImageUrl = ImageUrlObj.getString("icon")
-                    responseData.value =
+                    responseData =
                         FetchModel(
                             tempCurrent = temp,
                             tempFeels = tempFeels,
@@ -52,7 +55,7 @@ class Weather(context: Context) {
                             Cloud = Cloud,
                             ImageUrl = ImageUrl
                         )
-                    isLoading.value = false
+                    isLoading = false
                 } catch (e: Exception) {
                     Log.d("MyLog", e.toString())
                 }
@@ -71,7 +74,7 @@ class Weather(context: Context) {
     }
 
     fun getWeatherList(town: String) {
-        isLoadingList.value = true
+        isLoadingList = true
 
         val url = "https://api.weatherapi.com/v1/forecast.json"
         val stringRequest = StringRequest(
@@ -82,21 +85,31 @@ class Weather(context: Context) {
                     val JsonObjDay = Object.getJSONObject("forecast").getJSONArray("forecastday")
                     var forecastMap = mutableMapOf<String, Double>()
                     var forecastInfo = mutableMapOf<Int, Double>()
+                    var forecastCurious = mutableMapOf<Double, Double>()
                     for (i in 0 until JsonObjDay.length()) {
+                        val current = JsonObjDay.getJSONObject(i).getJSONObject("day")
                         val date = JsonObjDay.getJSONObject(i).getString("date")
                         val humidity =
-                            JsonObjDay.getJSONObject(i).getJSONObject("day").getInt("avghumidity")
-                        val windSpeed = JsonObjDay.getJSONObject(i).getJSONObject("day").getDouble("maxwind_mph")
+                            current.getInt("avghumidity")
+                        val windSpeed = current
+                            .getDouble("maxwind_mph")
                         val max_temp =
-                            JsonObjDay.getJSONObject(i).getJSONObject("day").getDouble("maxtemp_c")
+                            current.getDouble("maxtemp_c")
+                        val avg_vis = current.getDouble("avgvis_km")
+                        val totalprecip = current.getDouble("totalprecip_mm")
                         forecastMap.put(date, max_temp)
                         forecastInfo.put(humidity, windSpeed)
+                        forecastCurious.put(totalprecip, avg_vis)
                     }
-                    responseMapData.value = FetchList(MapData = forecastMap, MapInfo = forecastInfo)
-                    Log.d("MyLog", responseMapData.value.toString())
-                    isLoadingList.value = false
+                    responseMapData = FetchList(
+                        MapData = forecastMap,
+                        MapInfo = forecastInfo,
+                        MapCurious = forecastCurious
+                    )
+                    Log.d("MyLog", responseMapData.toString())
+                    isLoadingList = false
                 } catch (e: Exception) {
-                    errorMapMessage.value = e.message
+                    errorMapMessage = e.message
                     Log.d("MyLog", e.message.toString())
                 }
             }, { error ->

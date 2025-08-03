@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.slunny.Bars.Town.TownTopAppBar
 import com.example.slunny.Constants.TownData
 import com.example.slunny.Screens.Widgets.Town.TownFeedBack
+import com.example.slunny.Screens.Widgets.Town.TownForCurious
 import com.example.slunny.Screens.Widgets.Town.TownInformation
 import com.example.slunny.Screens.Widgets.Town.TownMainTown
 import com.example.slunny.Screens.Widgets.Town.TownMoreInformation
@@ -38,6 +39,7 @@ fun Town(data: TownData, controller: NavController) {
             TownFeedBack()
             TownWeather(context, data.Name)
             TownMoreInformation(context, data.Name)
+            TownForCurious(context, data.Name)
         }
     }
 }

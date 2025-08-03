@@ -35,9 +35,9 @@ import com.example.slunny.ui.theme.LightBlue
 fun TownMoreInformation(context: Context, town: String) {
 
     val weather = remember { Weather(context) }
-    val isLoading = weather.isLoadingList.collectAsState()
-    val errorList = weather.errorMapMessage.collectAsState()
-    val responseList = weather.responseMapData.collectAsState()
+    val isLoading = weather.isLoadingList
+    val errorList = weather.errorMapMessage
+    val responseList = weather.responseMapData
 
     LaunchedEffect(context) {
         weather.getWeatherList(town)
@@ -56,20 +56,20 @@ fun TownMoreInformation(context: Context, town: String) {
     )
 
     when {
-        isLoading.value -> CircularProgressIndicator()
-        errorList.value != null -> {
-            Log.d("MyLog", errorList.value.toString())
+        isLoading -> CircularProgressIndicator()
+        errorList != null -> {
+            Log.d("MyLog", errorList.toString())
         }
 
-        !isLoading.value && !responseList.value?.MapData.isNullOrEmpty() -> {
+        !isLoading && !responseList?.MapData.isNullOrEmpty() -> {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 itemsIndexed(
-                    responseList.value!!.MapInfo.entries.toList()
+                    responseList.MapInfo.entries.toList()
                 ) { index, item ->
-                    InformationItem(
+                    TownInformationItem(
                         item.key, item.value
                     )
 
@@ -83,7 +83,7 @@ fun TownMoreInformation(context: Context, town: String) {
 }
 
 @Composable
-fun InformationItem(humidity: Int, windSpeed: Double) {
+fun TownInformationItem(humidity: Int, windSpeed: Double) {
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))

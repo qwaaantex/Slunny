@@ -56,20 +56,20 @@ fun HomeTowns(
         ) {
             itemsIndexed(items = Lists.Towns) { index, item ->
                 val weather = remember { Weather(context) }
-                TownItem(item, controller, index, weather)
+                HomeTownItem(item, controller, index, weather)
             }
         }
     }
 }
 
 @Composable
-fun TownItem(item: String, controller: NavController, index: Int, weather: Weather) {
+fun HomeTownItem(item: String, controller: NavController, index: Int, weather: Weather) {
     LaunchedEffect(item) {
         weather.getWeather(item)
     }
-    val data = weather.responseData.collectAsState()
-    val error = weather.errorMessage.collectAsState()
-    val isLoading = weather.isLoading.collectAsState()
+    val data = weather.responseData
+    val error = weather.errorMessage
+    val isLoading = weather.isLoading
 
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Card(
@@ -93,7 +93,7 @@ fun TownItem(item: String, controller: NavController, index: Int, weather: Weath
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("${data.value?.tempFeels ?: "Загрузка..."}°",
+                    Text("${data?.tempFeels ?: "Загрузка..."}°",
                         modifier = Modifier.padding(6.dp),
                         style = TextStyle(color = darkBlue, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     )
@@ -110,7 +110,7 @@ fun TownItem(item: String, controller: NavController, index: Int, weather: Weath
                             )
                         )
                         when {
-                            isLoading.value ->
+                            isLoading ->
                                 CircularProgressIndicator(
                                     color = LightBlue
                                 )
@@ -118,9 +118,9 @@ fun TownItem(item: String, controller: NavController, index: Int, weather: Weath
                             error.value != null ->
                                 Text("Ошибка")
 
-                            data.value != null ->
+                            data != null ->
                                 Text(
-                                    text = "${data.value?.tempCurrent}°",
+                                    text = "${data.tempCurrent}°",
                                     textAlign = TextAlign.Center,
                                     style = TextStyle(
                                         fontSize = 17.sp,
@@ -132,9 +132,9 @@ fun TownItem(item: String, controller: NavController, index: Int, weather: Weath
                                 Text("Нет данных")
                         }
                     }
-                    if (data.value?.ImageUrl != null) AsyncImage(
+                    if (data?.ImageUrl != null) AsyncImage(
                         modifier = Modifier.padding(2.dp),
-                        model = "https:${data.value!!.ImageUrl}",
+                        model = "https:${data.ImageUrl}",
                         contentDescription = null
                     )
                 }

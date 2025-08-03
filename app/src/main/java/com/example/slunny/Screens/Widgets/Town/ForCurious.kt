@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,71 +26,49 @@ import com.example.slunny.Data.Weather.Weather
 import com.example.slunny.ui.theme.LightBlue
 
 @Composable
-fun TownWeather(
-    context: Context,
-    town: String,
-) {
+fun TownForCurious(context: Context, town: String) {
     val weather = remember { Weather(context) }
-    var list = weather.responseMapData
-    var loading = weather.isLoadingList
-    val error = weather.errorMapMessage
-
-    LaunchedEffect(town) {
+    LaunchedEffect(context) {
         weather.getWeatherList(town)
     }
+    val responseData = weather.responseMapData?.MapCurious
+    val error = weather.errorMapMessage
+    val isLoading = weather.isLoadingList
     Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 8.dp),
-        text = "Прогноз",
+        "Для любознательных",
+        textAlign = TextAlign.Start,
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
         style = TextStyle(
-            fontSize = 30.sp,
             color = LightBlue,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp
         ),
-        textAlign = TextAlign.Start
     )
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        modifier = Modifier.padding(8.dp)
-    ) {
-
-        when {
-            loading -> {
-                item {
-                    CircularProgressIndicator(
-                        color = LightBlue
-                    )
+    when {
+        isLoading -> CircularProgressIndicator()
+        error != null -> Text("Ошибка")
+        !responseData.isNullOrEmpty() && !isLoading -> {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                itemsIndexed(responseData.entries.toList())
+                {
+                    index, item -> TownCuriosItem(item.key, item.value)
                 }
-            }
-
-            error != null -> {
-                item {
-                    Text("Ошибка")
-                }
-            }
-
-            !loading && !list?.MapData.isNullOrEmpty() -> {
-                itemsIndexed(list.MapData.keys.toList()) { index, item ->
-                    val temp = list.MapData.getValue(item)
-                    WeatherItem(item, temp)
-                }
-            }
-
-            else -> item {
-                Text("Нет данных")
             }
         }
+        else -> Text("Нет данных")
     }
 }
 
 @Composable
-fun WeatherItem(item: String, temp: Double) {
+
+fun TownCuriosItem(precip: Double, vis: Double) {
     Column(
         modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(LightBlue),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(item)
-        Text(text = "$temp°")
+        Text("$precip мм")
+        Text("$vis км/ч")
     }
 }

@@ -7,7 +7,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import com.example.slunny.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,6 +23,16 @@ fun TownTopAppBar(navController: NavController) {
             }) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = null
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = {
+
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_share_location_24),
                     contentDescription = null
                 )
             }

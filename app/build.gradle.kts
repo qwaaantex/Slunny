@@ -48,7 +48,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:$nav_version")
     
     implementation("io.coil-kt:coil-compose:2.6.0")
-
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("com.android.volley:volley:1.2.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
