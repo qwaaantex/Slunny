@@ -115,7 +115,7 @@ fun HomeTownItem(item: String, controller: NavController, index: Int, weather: W
                                     color = LightBlue
                                 )
 
-                            error.value != null ->
+                            error != null ->
                                 Text("Ошибка")
 
                             data != null ->

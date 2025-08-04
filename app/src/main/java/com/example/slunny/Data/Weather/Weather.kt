@@ -23,7 +23,7 @@ class Weather(context: Context) : ViewModel() {
 
 
     var responseData by mutableStateOf<FetchModel?>(null)
-    var errorMessage = mutableStateOf<String?>(null)
+    var errorMessage by mutableStateOf<String?>(null)
 
     var responseMapData by mutableStateOf<FetchList?>(null)
     var errorMapMessage by mutableStateOf<String?>(null)
@@ -31,7 +31,7 @@ class Weather(context: Context) : ViewModel() {
 
     fun getWeather(town: String) {
         isLoading = true
-
+        errorMessage = null
         val url = "https://api.weatherapi.com/v1/current.json"
         val stringRequest = StringRequest(
             Request.Method.GET, "$url?key=$key&q=$town&aqi=no",
@@ -57,12 +57,13 @@ class Weather(context: Context) : ViewModel() {
                         )
                     isLoading = false
                 } catch (e: Exception) {
+                    errorMapMessage = e.toString()
                     Log.d("MyLog", e.toString())
                 }
             },
             { error ->
                 Log.d("MyLog", error.message.toString())
-                errorMessage.value = error.message
+                errorMessage = error.message
             }
         )
         stringRequest.retryPolicy = DefaultRetryPolicy(
@@ -75,7 +76,7 @@ class Weather(context: Context) : ViewModel() {
 
     fun getWeatherList(town: String) {
         isLoadingList = true
-
+        errorMapMessage = null
         val url = "https://api.weatherapi.com/v1/forecast.json"
         val stringRequest = StringRequest(
             Request.Method.GET, "$url?key=$key&q=$town&days=3&aqi=no&alerts=no",
@@ -113,6 +114,7 @@ class Weather(context: Context) : ViewModel() {
                     Log.d("MyLog", e.message.toString())
                 }
             }, { error ->
+                errorMapMessage = error.toString()
                 Log.d("MyLog", error.toString())
             }
         )

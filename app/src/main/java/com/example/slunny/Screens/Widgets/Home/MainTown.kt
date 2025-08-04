@@ -19,15 +19,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
-import androidx.constraintlayout.compose.ConstraintLayoutScope
 import com.example.slunny.ui.theme.LightBlue
-import com.example.slunny.ui.theme.darkBlue
 
 @Composable
 fun HomeMainTown(
     town: String,
-    temp: Int,
+    temp: Double,
     weather: String
 ) {
     Column(
