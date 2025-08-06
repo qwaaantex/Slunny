@@ -21,6 +21,10 @@ class Weather(context: Context) : ViewModel() {
     var isLoading by mutableStateOf<Boolean>(false)
     var isLoadingList by mutableStateOf<Boolean>(false)
 
+    var responseTemperature by mutableStateOf<FetchTemperature?>(null)
+    var errorTemperature by mutableStateOf<String?>(null)
+    var isLoadingTemperature by mutableStateOf<Boolean>(false)
+
 
     var responseData by mutableStateOf<FetchModel?>(null)
     var errorMessage by mutableStateOf<String?>(null)
@@ -128,4 +132,45 @@ class Weather(context: Context) : ViewModel() {
         request.add(stringRequest)
     }
 
+    fun getWeatherTemperature(town: String) {
+        isLoadingTemperature = true
+        val url =
+            "https://api.weatherapi.com/v1/forecast.json?key=$key&q=$town&days=1&aqi=no&alerts=no"
+        val stringRequest = StringRequest(
+            Request.Method.GET, url, { response ->
+                try {
+                    val obj = JSONObject(response)
+                    val jsonObject = obj.getJSONObject("forecast").getJSONArray("forecastday")
+                    for (i in 0 until jsonObject.length()) {
+                        val tempObj = jsonObject.getJSONObject(i).getJSONObject("day")
+                        val max_temp = tempObj.getDouble("maxtemp_c")
+                        val min_temp = tempObj.getDouble("mintemp_c")
+                        val humidity = tempObj.getInt("avghumidity")
+                        val weather = tempObj.getJSONObject("condition").getString("text")
+                        responseTemperature = FetchTemperature(
+                            tempMax = max_temp,
+                            tempMin = min_temp,
+                            humidity = humidity,
+                            weather
+                        )
+                    }
+                    isLoadingTemperature = false
+                } catch (e: Exception) {
+                    errorTemperature = e.toString()
+                    Log.d("MyLog", e.toString())
+                    isLoadingTemperature = false
+                }
+            }, { error ->
+                errorTemperature = error.toString()
+                Log.d("MyLog", error.toString())
+                isLoadingTemperature = false
+            }
+        )
+        stringRequest.retryPolicy = DefaultRetryPolicy(
+            60000,
+            1,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        request.add(stringRequest)
+    }
 }

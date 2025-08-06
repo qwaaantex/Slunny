@@ -49,9 +49,9 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.3.0")
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
-    implementation("com.android.volley:volley:1.2.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("com.android.volley:volley:1.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")

@@ -9,7 +9,7 @@ data class FetchModel(
     val windSpeed: Double,
     val Humidity: Int,
     val Cloud: Int,
-    val ImageUrl: String
+    val ImageUrl: String,
 )
 
 @Serializable
@@ -17,4 +17,12 @@ data class FetchList(
     val MapData: Map<String, Double>,
     val MapInfo: Map<Int, Double>,
     val MapCurious: Map<Double, Double>
+)
+
+@Serializable
+data class FetchTemperature(
+    val tempMax: Double,
+    val tempMin: Double,
+    val humidity: Int,
+    val weather: String
 )

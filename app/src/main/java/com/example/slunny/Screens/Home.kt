@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,7 +18,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.slunny.Bars.Home.HomeTopAppBar
@@ -35,7 +41,6 @@ import com.example.slunny.ui.theme.LightBlue
 @Composable
 fun Home(
     controller: NavController,
-    viewModel: FetchLocation = viewModel(),
 ) {
     val context = LocalContext.current
     var searchText by remember { mutableStateOf("") }
@@ -46,23 +51,25 @@ fun Home(
     var loading = weather.isLoading
     var response = weather.responseData
 
-    var city = viewModel.city;
+    val location = remember { FetchLocation() }
+
+    var city = location.city
     LaunchedEffect(context) {
-        viewModel.getCity(context)
+        location.getCity(context)
         try {
             weather.getWeather(city ?: "Москва")
         } catch (e: Exception) {
             Log.d("MyLog", e.toString())
         }
     }
-    val isGeoPermission = viewModel.isPermissionGranted
+    val isGeoPermission = location.isPermissionGranted
     Scaffold(
         floatingActionButton = {
             HomeRefresh()
         },
         topBar = { HomeTopAppBar() }
     ) { innerPadding ->
-        if (isGeoPermission) {
+        if (isGeoPermission && location.city != null) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -75,10 +82,11 @@ fun Home(
                         CircularProgressIndicator()
                         Log.d("MyLog", error.toString())
                     }
+
                     !loading && response != null -> HomeMainTown(
                         city.toString(),
                         response.tempCurrent,
-                        "Солнечно"
+                        context
                     )
                 }
                 HomeSearch(searchText, active)
@@ -86,8 +94,25 @@ fun Home(
             }
         } else {
             Box(
-                modifier = Modifier.fillMaxSize()
-            )
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column {
+                    CircularProgressIndicator(
+                        color = LightBlue
+                    )
+                    Text(
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            color = Color.Gray
+                        ),
+                        textAlign = TextAlign.Center,
+                        text =
+                        "Перейдите в настройки приложения, чтобы возобновить работу его разрешений",
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
         }
     }
 }
