@@ -2,9 +2,12 @@ package com.example.slunny.Screens
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -34,6 +38,7 @@ import com.example.slunny.Screens.Widgets.Home.HomeRefresh
 import com.example.slunny.Screens.Widgets.Home.HomeSearch
 import com.example.slunny.Screens.Widgets.Home.HomeTowns
 import com.example.slunny.ui.theme.LightBlue
+import com.example.slunny.ui.theme.darkBlue
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -97,10 +102,14 @@ fun Home(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Column {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     CircularProgressIndicator(
-                        color = LightBlue
+                        color = darkBlue
                     )
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         style = TextStyle(
                             fontSize = 16.sp,

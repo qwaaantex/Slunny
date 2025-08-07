@@ -2,7 +2,6 @@ package com.example.slunny.Screens.Widgets.Town
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -19,7 +18,7 @@ import com.example.slunny.ui.theme.darkBlue
 @Composable
 fun TownMainTown(
     townName: String,
-    currentTemp: Int
+    currentTemp: Double
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

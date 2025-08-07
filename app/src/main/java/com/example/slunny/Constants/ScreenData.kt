@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TownData(
     val Name: String,
-    val Temp: Int
+    val Temp: Double
 )

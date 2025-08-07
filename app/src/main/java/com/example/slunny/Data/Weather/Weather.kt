@@ -111,7 +111,6 @@ class Weather(context: Context) : ViewModel() {
                         MapInfo = forecastInfo,
                         MapCurious = forecastCurious
                     )
-                    Log.d("MyLog", responseMapData.toString())
                     isLoadingList = false
                 } catch (e: Exception) {
                     errorMapMessage = e.message
