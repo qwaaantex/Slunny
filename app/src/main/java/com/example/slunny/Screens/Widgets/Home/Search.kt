@@ -2,11 +2,14 @@ package com.example.slunny.Screens.Widgets.Home
 
 import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -50,7 +54,7 @@ import com.example.slunny.ui.theme.darkBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeSearch(Text: String, Act: Boolean) {
+fun HomeSearch(Text: String, Act: Boolean, townScreen: (String) -> Unit) {
     var searchText by remember {
         mutableStateOf(Text)
     }
@@ -98,43 +102,48 @@ fun HomeSearch(Text: String, Act: Boolean) {
         active = active,
         onActiveChange = { active = it }
     ) {
+        if (!list.value.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.fillMaxHeight(0.02f))
+        }
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Bottom
         ) {
             if (!list.value.isNullOrEmpty()) {
                 items(list.value!!.size) {
                     list.value!!.forEach { item ->
-                        Card(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth(0.9f)
+                                .padding(4.dp)
+                                .clip(
+                                    RoundedCornerShape(16.dp)
+                                )
+                                .background(LightBlue).clickable{
+                                    townScreen(item)
+                                }
+                                .padding(6.dp),
+
+                            horizontalArrangement = Arrangement.Center,
                         ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(8.dp)).padding(8.dp)
-                                    .background(LightBlue),
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Icon(
-                                    modifier = Modifier.size(30.dp),
-                                    tint = darkBlue,
-                                    contentDescription = null,
-                                    painter = painterResource(R.drawable.baseline_location_city_24)
-                                )
-                                Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    maxLines = 1,
-                                    text = item,
-                                    fontWeight = FontWeight.Bold,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontSize = 18.sp
-                                )
-                            }
+                            Icon(
+                                modifier = Modifier.size(30.dp),
+                                tint = darkBlue,
+                                contentDescription = null,
+                                painter = painterResource(R.drawable.baseline_location_city_24)
+                            )
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                text = item,
+                                fontWeight = FontWeight.Bold,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 18.sp
+                            )
                         }
                     }
                 }

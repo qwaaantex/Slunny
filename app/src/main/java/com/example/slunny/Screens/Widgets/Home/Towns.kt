@@ -144,7 +144,6 @@ fun HomeTownItem(item: String, controller: NavController, index: Int, weather: W
                             controller.navigate(
                                 TownData(
                                     Name = item,
-                                    Temp = data?.tempCurrent ?: 0.0
                                 )
                             )
                         } catch (e: Exception) {

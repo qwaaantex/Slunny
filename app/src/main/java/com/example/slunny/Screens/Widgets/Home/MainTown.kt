@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -54,6 +55,9 @@ fun HomeMainTown(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth(0.4f),
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
             text = town,
             style = TextStyle(fontSize = 30.sp, color = Color.Black, fontWeight = FontWeight.Bold)
         )

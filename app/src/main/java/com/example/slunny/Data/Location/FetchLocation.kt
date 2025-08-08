@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -40,7 +39,7 @@ class FetchLocation() : ViewModel() {
                val geocoder = Geocoder(context, Locale.getDefault())
                 val citys = geocoder.getFromLocation(it.latitude, it.longitude, 1)
                 city = citys?.firstOrNull()?.let {
-                    adress -> adress.locality ?: adress.adminArea ?: adress.subLocality
+                    adress -> adress.locality ?: adress.subLocality ?: adress.adminArea
                 }
             }
         } catch (e: Exception) {

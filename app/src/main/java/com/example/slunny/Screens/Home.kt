@@ -28,16 +28,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.slunny.Bars.Home.HomeTopAppBar
+import com.example.slunny.Constants.TownData
 import com.example.slunny.Data.Location.FetchLocation
 import com.example.slunny.Data.Weather.Weather
 import com.example.slunny.Screens.Widgets.Home.HomeMainTown
 import com.example.slunny.Screens.Widgets.Home.HomeRefresh
 import com.example.slunny.Screens.Widgets.Home.HomeSearch
 import com.example.slunny.Screens.Widgets.Home.HomeTowns
-import com.example.slunny.ui.theme.LightBlue
 import com.example.slunny.ui.theme.darkBlue
 
 
@@ -74,7 +73,7 @@ fun Home(
         },
         topBar = { HomeTopAppBar() }
     ) { innerPadding ->
-        if (isGeoPermission && location.city != null) {
+        if (isGeoPermission) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -89,12 +88,14 @@ fun Home(
                     }
 
                     !loading && response != null -> HomeMainTown(
-                        city.toString(),
+                        city ?: "Неизвестно",
                         response.tempCurrent,
                         context
                     )
                 }
-                HomeSearch(searchText, active)
+                HomeSearch(searchText, active) { town ->
+                    controller.navigate(TownData(town))
+                }
                 HomeTowns(controller, context)
             }
         } else {
@@ -117,7 +118,7 @@ fun Home(
                         ),
                         textAlign = TextAlign.Center,
                         text =
-                        "Перейдите в настройки приложения, чтобы возобновить работу его разрешений",
+                            "Перейдите в настройки приложения, чтобы возобновить работу его разрешений",
                         overflow = TextOverflow.Ellipsis
                     )
                 }
