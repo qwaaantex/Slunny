@@ -69,7 +69,7 @@ fun Home(
     val isGeoPermission = location.isPermissionGranted
     Scaffold(
         floatingActionButton = {
-            HomeRefresh()
+            HomeRefresh(context, city ?: "Москва")
         },
         topBar = { HomeTopAppBar() }
     ) { innerPadding ->

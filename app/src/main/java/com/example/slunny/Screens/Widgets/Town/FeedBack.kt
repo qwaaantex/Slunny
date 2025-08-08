@@ -56,7 +56,7 @@ fun TownFeedBack(
             Text(
                 "Ваше мнение",
                 style = TextStyle(
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                 )
             )
             Row(

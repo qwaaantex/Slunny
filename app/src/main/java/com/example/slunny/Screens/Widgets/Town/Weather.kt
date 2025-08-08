@@ -1,9 +1,11 @@
 package com.example.slunny.Screens.Widgets.Town
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -38,7 +40,11 @@ fun TownWeather(
     val error = weather.errorMapMessage
 
     LaunchedEffect(town) {
-        weather.getWeatherList(town)
+        try {
+            weather.getWeatherList(town)
+        } catch (e: Exception) {
+            Log.d("MyLog", e.toString())
+        }
     }
     Text(
         modifier = Modifier
@@ -75,7 +81,10 @@ fun TownWeather(
             !loading && !list?.MapData.isNullOrEmpty() -> {
                 itemsIndexed(list.MapData.keys.toList()) { index, item ->
                     val temp = list.MapData.getValue(item)
-                    WeatherItem(item, temp)
+                    WeatherItem(
+                        item,
+                        temp,
+                    )
                 }
             }
 
@@ -87,9 +96,14 @@ fun TownWeather(
 }
 
 @Composable
-fun WeatherItem(item: String, temp: Double) {
+fun WeatherItem(
+    item: String,
+    temp: Double,
+) {
     Column(
-        modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(LightBlue),
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(LightBlue),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(item)
