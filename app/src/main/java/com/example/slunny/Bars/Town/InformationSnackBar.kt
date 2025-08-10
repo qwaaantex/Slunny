@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.slunny.R
-import com.example.slunny.ui.theme.darkBlue
 import com.example.slunny.ui.theme.warningBlue
 
 @Composable
