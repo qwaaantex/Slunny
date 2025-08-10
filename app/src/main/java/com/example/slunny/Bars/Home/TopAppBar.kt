@@ -15,15 +15,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.slunny.Constants.Info
 import com.example.slunny.ui.theme.darkBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopAppBar() {
+fun HomeTopAppBar(controller: NavController) {
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                controller.navigate(Info)
+            }) {
                 Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = darkBlue)
             }
         },

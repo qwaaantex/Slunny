@@ -71,7 +71,7 @@ fun Home(
         floatingActionButton = {
             HomeRefresh(context, city ?: "Москва")
         },
-        topBar = { HomeTopAppBar() }
+        topBar = { HomeTopAppBar(controller) }
     ) { innerPadding ->
         if (isGeoPermission) {
             Column(

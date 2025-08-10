@@ -57,7 +57,10 @@ fun TownMainTown(
                 fontSize = 40.sp
             )
         )
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = "$tempMax° ",
                 fontSize = 26.sp
@@ -67,7 +70,7 @@ fun TownMainTown(
         Text(weather, fontSize = 20.sp)
         Text(
             "$humidity%",
-            fontSize = 20.sp
+            fontSize = 18.sp
         )
     }
 }

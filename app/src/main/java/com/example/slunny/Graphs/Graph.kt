@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.slunny.Constants.Home
+import com.example.slunny.Constants.Info
 import com.example.slunny.Constants.TownData
 import com.example.slunny.Screens.Home
 import com.example.slunny.Screens.Town
@@ -22,6 +23,10 @@ fun Graph(navHostController: NavHostController) {
         composable<TownData> { entry ->
             val data: TownData = entry.toRoute<TownData>()
             Town(data, controller = navHostController)
+        }
+        composable<Info> {
+            entry ->
+            com.example.slunny.Screens.Info(navHostController)
         }
     }
 }
