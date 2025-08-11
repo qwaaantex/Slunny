@@ -58,7 +58,7 @@ fun Town(data: TownData, controller: NavController) {
             }
         },
         topBar = {
-            TownTopAppBar(controller, context, data.Name)
+            TownTopAppBar(controller)
         }
     ) { innerPadding ->
         var response = weather.responseData?.tempCurrent

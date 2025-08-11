@@ -9,15 +9,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.slunny.Bars.Info.InfoTopAppBar
 import com.example.slunny.Screens.Widgets.Info.InfoInformation
 import com.example.slunny.Screens.Widgets.Info.InfoMainText
+import com.example.slunny.Screens.Widgets.Info.InfoMethodsCall
 import com.example.slunny.Screens.Widgets.Info.InfoQuestions
 import com.example.slunny.Screens.Widgets.Info.InfoSupport
 
@@ -38,8 +41,15 @@ fun Info(controller: NavController) {
         ) {
             InfoMainText("Slunny")
             Spacer(modifier = Modifier.height(6.dp))
+            Divider(
+                color = Color.LightGray,
+                modifier = Modifier.fillMaxWidth(0.9f)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
             InfoInformation()
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            InfoMethodsCall()
+            Spacer(modifier = Modifier.height(12.dp))
             InfoSupport()
             Spacer(modifier = Modifier.height(6.dp))
             InfoQuestions()

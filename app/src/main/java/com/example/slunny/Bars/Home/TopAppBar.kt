@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.slunny.Constants.Info
+import com.example.slunny.ui.theme.LightBlue
 import com.example.slunny.ui.theme.darkBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,25 +29,31 @@ fun HomeTopAppBar(controller: NavController) {
             IconButton(onClick = {
                 controller.navigate(Info)
             }) {
-                Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = darkBlue)
+                Icon(
+                    tint = LightBlue,
+                    imageVector = Icons.Default.Info, contentDescription = null
+                )
             }
         },
         title = {
             Text(
-                text = "Ваша геопозиция:",
+                text = "Ваша геопозиция",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 style = TextStyle(
-                    color = darkBlue,
+                    color = LightBlue,
                     fontSize = 21.sp,
-                    fontWeight = FontWeight.W400
+                    fontWeight = FontWeight.Bold
                 )
             )
         },
 
         actions = {
             IconButton(onClick = {}) {
-                Icon(imageVector = Icons.Default.Star, contentDescription = "", tint = darkBlue)
+                Icon(
+                    tint = LightBlue,
+                    imageVector = Icons.Default.Star, contentDescription = ""
+                )
             }
         }
     )
