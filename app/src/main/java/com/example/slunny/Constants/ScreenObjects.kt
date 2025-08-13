@@ -7,3 +7,6 @@ object Home {}
 
 @Serializable
 object Info {}
+
+@Serializable
+object LikelyTowns {}

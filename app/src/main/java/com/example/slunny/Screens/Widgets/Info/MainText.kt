@@ -75,7 +75,6 @@ fun InfoMainText(name: String) {
                     text = "Beta",
                     style = TextStyle(
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
                     )
                 )
             }

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.slunny.Constants.Info
+import com.example.slunny.Constants.LikelyTowns
 import com.example.slunny.ui.theme.LightBlue
 import com.example.slunny.ui.theme.darkBlue
 
@@ -49,7 +50,9 @@ fun HomeTopAppBar(controller: NavController) {
         },
 
         actions = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                controller.navigate(LikelyTowns)
+            }) {
                 Icon(
                     tint = LightBlue,
                     imageVector = Icons.Default.Star, contentDescription = ""

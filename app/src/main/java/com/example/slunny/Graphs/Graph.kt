@@ -7,8 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.slunny.Constants.Home
 import com.example.slunny.Constants.Info
+import com.example.slunny.Constants.LikelyTowns
 import com.example.slunny.Constants.TownData
 import com.example.slunny.Screens.Home
+import com.example.slunny.Screens.LikelyTowns
 import com.example.slunny.Screens.Town
 
 @Composable
@@ -27,6 +29,10 @@ fun Graph(navHostController: NavHostController) {
         composable<Info> {
             entry ->
             com.example.slunny.Screens.Info(navHostController)
+        }
+        composable<LikelyTowns> {
+            entry ->
+            LikelyTowns(navHostController)
         }
     }
 }
